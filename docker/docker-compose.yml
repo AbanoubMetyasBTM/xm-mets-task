@@ -1,0 +1,51 @@
+version: '3'
+
+networks:
+    laravel:
+
+services:
+    apache:
+        build:
+            context: .
+            dockerfile: DockerFile
+        container_name: mets-xm-task-apache
+        ports:
+            - "8088:80"
+        volumes:
+            - ../.:/var/www/html
+            - ./apache/site.conf:/etc/apache2/sites-available/000-default.conf
+        depends_on:
+            - db
+        networks:
+            laravel:
+
+    db:
+        image: mysql:5.7
+        command: --default-authentication-plugin=mysql_native_password
+        container_name: mysql
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "4306:3306"
+        volumes:
+            - ./mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        networks:
+            laravel:
+
+
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        ports:
+            - 8080:80
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=db
+            - PMA_USER=root
+            - PMA_PASSWORD=root
+        networks:
+            laravel:

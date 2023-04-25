@@ -1,0 +1,21 @@
+docker-compose rm -f
+docker-compose pull
+docker-compose up --build -d
+docker-compose build && docker-compose up -d && docker-compose logs -f
+
+
+#stop and remove container
+docker-compose rm -s
+
+###########################
+
+docker exec -it mets-xm-task-apache composer install
+docker exec -it mets-xm-task-apache php artisan migrate
+docker exec -it mets-xm-task-apache php artisan db:seed
+
+
+//to run test-cases
+docker exec -it mets-xm-task-apache php artisan test
+
+//to run queue:jobs
+docker exec -it mets-xm-task-apache php artisan queue:listen

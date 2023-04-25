@@ -1,0 +1,14 @@
+.form-group{
+    position: relative;
+}
+
+.ui-datepicker-trigger {
+    position: absolute;
+    top: 30px;
+    right: 23px;
+}
+
+.table_view{
+    max-height: 400px;
+    overflow-y: scroll;
+}
